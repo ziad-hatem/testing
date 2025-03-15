@@ -6,7 +6,13 @@ if (!process.env.MONGODB_URI && !process.env.MONGO_URI) {
 }
 
 const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
-const options = {};
+const options = {
+  connectTimeoutMS: 30000, // 30 seconds
+  socketTimeoutMS: 45000, // 45 seconds
+  serverSelectionTimeoutMS: 30000, // 30 seconds
+  maxPoolSize: 10, // Maintain up to 10 socket connections
+  minPoolSize: 5, // Maintain at least 5 socket connections
+};
 
 let client;
 let clientPromise: Promise<MongoClient>;

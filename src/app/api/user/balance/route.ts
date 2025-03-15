@@ -15,7 +15,15 @@ if (!MONGODB_URI) {
 }
 
 if (mongoose.connection.readyState !== 1) {
-  mongoose.connect(MONGODB_URI);
+  mongoose
+    .connect(MONGODB_URI, {
+      connectTimeoutMS: 30000, // 30 seconds
+      socketTimeoutMS: 45000, // 45 seconds
+      serverSelectionTimeoutMS: 30000, // 30 seconds
+    })
+    .catch((err) => {
+      console.error("MongoDB connection error in user balance route:", err);
+    });
 }
 
 export async function GET(req: Request) {
